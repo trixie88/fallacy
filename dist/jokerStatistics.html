@@ -15,6 +15,14 @@
     <link rel="stylesheet" href="style.css">
 
 
+    <style>
+        .centerImg {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+    </style>
 
 </head>
 
@@ -37,6 +45,9 @@
             </div>
         </div>
     </nav>
+
+    <img id="eikona" style="width: 100px" src="https://loading.io/spinners/rolling/lg.curve-bars-loading-indicator.gif"
+        alt="Paris" class="centerImg">
     <div id="chartContainer" style="height: 370px; width: 100%;"></div>
     <br />
     <div id="jokerContainer" style="height: 370px; width: 100%;"></div>
@@ -90,6 +101,7 @@
                 // console.log(element);
                 dataTobeShown.push({ x: element.number, y: element.occurrences })
             });
+            document.getElementById("eikona").style.display = "none";
             var chart = new CanvasJS.Chart("jokerContainer", {
                 animationEnabled: true,
                 exportEnabled: true,
