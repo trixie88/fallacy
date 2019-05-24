@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Fallacy</title>
+
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+        integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+
+
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+
+            <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <i class="fas fa-align-justify"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html">Αρχική Σελίδα</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <br />
+    <div id="jokerContainer" style="height: 370px; width: 100%;"></div>
+
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js">
+    </script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+        integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous">
+        </script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+        integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous">
+        </script>
+
+    <script>
+        window.onload = function () {
+            // $.ajax({
+            //     type: "GET",
+            //     url: "https://limitless-forest-93522.herokuapp.com/https://api.opap.gr/games/v1.0/5104/statistics",
+            //     dataType: 'json',
+            //     async: true,
+            //     success: (data) => {
+            //         numbers = data.numbers;
+            //         assignDataPoints(numbers);
+            //     },
+            //     error: () => {
+            //         console.log("eror");
+            //     }
+            // });
+
+            $.ajax({
+                type: "GET",
+                url: "https://limitless-forest-93522.herokuapp.com/https://api.opap.gr/games/v1.0/5104/statistics",
+                dataType: 'json',
+                async: true,
+                success: (data) => {
+                    setNumbers(data.numbers);
+                    setJokerNumbers(data.bonusNumbers)
+                },
+                error: () => {
+                    console.log("eror");
+                }
+            });
+
+        }
+        function setNumbers(listOfNumbers) {
+            let dataTobeShown = [];
+            listOfNumbers.forEach(element => {
+                // console.log(element);
+                dataTobeShown.push({ x: element.number, y: element.occurrences })
+            });
+            var chart = new CanvasJS.Chart("jokerContainer", {
+                animationEnabled: true,
+                exportEnabled: true,
+                theme: "light1", // "light1", "light2", "dark1", "dark2"
+                title: {
+                    text: "Νούμερα 1-45 από 1997  \n (Πόσες Φορές έχει έρθει το κάθε νούμερο)"
+                },
+                data: [{
+                    type: "column", //change type to bar, line, area, pie, etc
+                    //indexLabel: "{y}", //Shows y value on all Data Points
+                    indexLabelFontColor: "#5A5757",
+                    indexLabelPlacement: "outside",
+                    dataPoints: dataTobeShown
+                }]
+            });
+            chart.render();
+
+        }
+
+        function setJokerNumbers(listOfNumbers) {
+            let dataTobeShown = [];
+            listOfNumbers.forEach(element => {
+                // console.log(element);
+                dataTobeShown.push({ x: element.number, y: element.occurrences })
+            });
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                exportEnabled: true,
+                theme: "light1", // "light1", "light2", "dark1", "dark2"
+                title: {
+                    text: "Νούμερα Τζοκερ από 1997  \n (Πόσες Φορές έχει έρθει το κάθε νούμερο)"
+                },
+                data: [{
+                    type: "column", //change type to bar, line, area, pie, etc
+                    //indexLabel: "{y}", //Shows y value on all Data Points
+                    indexLabelFontColor: "#5A5757",
+                    indexLabelPlacement: "outside",
+                    dataPoints: dataTobeShown
+                }]
+            });
+            chart.render();
+
+        }
+
+    </script>
+</body>
+
+</html>
